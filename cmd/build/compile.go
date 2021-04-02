@@ -71,7 +71,7 @@ func compileSvelte(ctx *v8go.Context, SSRctx *v8go.Context, layoutPath string,
 	}
 
 	// Compile component with Svelte.
-	_, err := ctx.RunScript("var { js, css } = svelte.compile(`"+componentStr+"`, {css: false, hydratable: true});", "compile_svelte")
+	_, err := ctx.RunScript("var { js, css } = svelte.compile(`"+strings.Replace(componentStr, `\`, `\\`, -1)+"`, {css: false, hydratable: true});", "compile_svelte")
 	if err != nil {
 		return fmt.Errorf("can't compile component file %s with Svelte: %w%s\n", layoutPath, err, common.Caller())
 	}
@@ -120,7 +120,7 @@ func compileSvelte(ctx *v8go.Context, SSRctx *v8go.Context, layoutPath string,
 	}
 
 	// Get Server Side Rendered (SSR) JS.
-	_, ssrCompileErr := ctx.RunScript("var { js: ssrJs, css: ssrCss } = svelte.compile(`"+componentStr+"`, {generate: 'ssr'});", "compile_svelte")
+	_, ssrCompileErr := ctx.RunScript("var { js: ssrJs, css: ssrCss } = svelte.compile(`"+strings.Replace(componentStr, `\`, `\\`, -1)+"`, {generate: 'ssr'});", "compile_svelte")
 	if ssrCompileErr != nil {
 		return fmt.Errorf("V8go could not compile ssrJs.code for %s: %w%s\n", layoutPath, ssrCompileErr, common.Caller())
 	}

@@ -48,7 +48,6 @@ func Client(buildPath string, tempBuildDir string, defaultsEjectedFS embed.FS) e
 	)
 	if err != nil {
 		return fmt.Errorf("Can't read %s/node_modules/svelte/compiler.js: %w%s\n", tempBuildDir, err, common.Caller())
-
 	}
 	// Remove reference to 'self' that breaks v8go on line 19 of node_modules/svelte/compiler.js.
 	compilerStr := strings.Replace(string(compiler), "self.performance.now();", "'';", 1)
